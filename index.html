@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REALM PoC Viewer</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+    #loreBox {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 16px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-family: sans-serif;
+      font-size: 16px;
+      max-width: 300px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loreBox">Hello World. Welcome to REALM.</div>
+  <canvas id="renderCanvas"></canvas>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.js"></script>
+  <script>
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true);
+
+    const createScene = async () => {
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color4(0.05, 0.05, 0.1, 1);
+
+      const camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 3, 10, new BABYLON.Vector3(0, 1, 0), scene);
+      camera.attachControl(canvas, true);
+
+      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 0.8;
+
+      // Load a 3D environment
+      await BABYLON.SceneLoader.AppendAsync("https://assets.babylonjs.com/environments/", "environmentSpecular.env", scene);
+
+      const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
+      scene.environmentTexture = envTexture;
+
+      const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 20, height: 20 }, scene);
+      const groundMaterial = new BABYLON.StandardMaterial("groundMat", scene);
+      groundMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.35);
+      ground.material = groundMaterial;
+
+      // Load a human character model
+      const result = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
+
+      const character = result.meshes[0];
+      character.position = new BABYLON.Vector3(0, 0, 0);
+
+      // Begin idle animation
+      scene.beginAnimation(result.skeletons[0], 0, 100, true);
+
+      return scene;
+    };
+
+    createScene().then((scene) => {
+      engine.runRenderLoop(() => {
+        scene.render();
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      engine.resize();
+    });
+  </script>
+</body>
+</html>
