@@ -48,7 +48,8 @@
       light.intensity = 0.8;
 
       // Load a 3D environment
-      await BABYLON.SceneLoader.AppendAsync("https://assets.babylonjs.com/environments/", "environmentSpecular.env", scene);
+      await BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/", "BoomBox.glb", scene);
+
 
       const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
       scene.environmentTexture = envTexture;
