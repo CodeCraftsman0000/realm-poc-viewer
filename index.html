@@ -47,33 +47,33 @@
       const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
       light.intensity = 0.8;
 
-      // Load a 3D environment
-      const newResult = await BABYLON.SceneLoader.ImportMeshAsync(
-  "", 
-  "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/", 
-  "Avocado.glb", 
-  scene
-);
-const model = newResult.meshes[0];
-model.position = new BABYLON.Vector3(0, 0, 0);
+      // Load Avocado model
+      const avocadoResult = await BABYLON.SceneLoader.ImportMeshAsync(
+        "", 
+        "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/", 
+        "Avocado.glb", 
+        scene
+      );
+      const avocado = avocadoResult.meshes[0];
+      avocado.position = new BABYLON.Vector3(2, 0, 0);
 
-
+      // Environment texture
       const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
       scene.environmentTexture = envTexture;
 
+      // Ground
       const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 20, height: 20 }, scene);
       const groundMaterial = new BABYLON.StandardMaterial("groundMat", scene);
       groundMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.35);
       ground.material = groundMaterial;
 
-      // Load a human character model
-      const result = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
+      // Load human character model
+      const dudeResult = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
+      const character = dudeResult.meshes[0];
+      character.position = new BABYLON.Vector3(-2, 0, 0);
 
-      const character = result.meshes[0];
-      character.position = new BABYLON.Vector3(0, 0, 0);
-
-      // Begin idle animation
-      scene.beginAnimation(result.skeletons[0], 0, 100, true);
+      // Start animation
+      scene.beginAnimation(dudeResult.skeletons[0], 0, 100, true);
 
       return scene;
     };
