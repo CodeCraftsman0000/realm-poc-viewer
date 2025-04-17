@@ -50,11 +50,10 @@
       // Load a 3D environment
       const result = await BABYLON.SceneLoader.ImportMeshAsync(
   "", 
-  "https://raw.githubusercontent.com/jeremydmiller/glb-files/main/", 
-  "boomBox.glb", 
+  "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/", 
+  "Avocado.glb", 
   scene
 );
-
 const model = result.meshes[0];
 model.position = new BABYLON.Vector3(0, 0, 0);
 
