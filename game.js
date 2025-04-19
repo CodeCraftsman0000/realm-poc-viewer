@@ -31,11 +31,11 @@ class Character {
      * @param {number} deltaTime - Time elapsed since last update (in milliseconds)
      */
     update() {
-        // Direct position update without any calculations
-        if (this.direction.x < 0) this.x = Math.max(this.boundary.minX, this.x - 50);
-        if (this.direction.x > 0) this.x = Math.min(this.boundary.maxX, this.x + 50);
-        if (this.direction.y < 0) this.y = Math.max(this.boundary.minY, this.y - 50);
-        if (this.direction.y > 0) this.y = Math.min(this.boundary.maxY, this.y + 50);
+        // Direct position update with smoother movement
+        if (this.direction.x < 0) this.x = Math.max(this.boundary.minX, this.x - 10);
+        if (this.direction.x > 0) this.x = Math.min(this.boundary.maxX, this.x + 10);
+        if (this.direction.y < 0) this.y = Math.max(this.boundary.minY, this.y - 10);
+        if (this.direction.y > 0) this.y = Math.min(this.boundary.maxY, this.y + 10);
     }
 
     /**
