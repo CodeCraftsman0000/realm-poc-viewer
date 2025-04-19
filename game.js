@@ -138,7 +138,7 @@ class Game {
         window.addEventListener('resize', () => this.resizeCanvas());
         
         // Create character with higher speed
-        this.character = new Character(400, 300, 15, {
+        this.character = new Character(400, 300, 45, {
             minX: 0,
             maxX: this.canvas.width,
             minY: 0,
