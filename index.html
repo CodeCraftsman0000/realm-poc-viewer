@@ -48,14 +48,12 @@
       light.intensity = 0.8;
 
       // Load a 3D environment
-      const newResult = await BABYLON.SceneLoader.ImportMeshAsync(
+      const result = await BABYLON.SceneLoader.ImportMeshAsync(
   "", 
-  "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/", 
-  "Avocado.glb", 
+  "assets/", 
+  "Cubetest.glb", 
   scene
 );
-const model = newResult.meshes[0];
-model.position = new BABYLON.Vector3(0, 0, 0);
 
 
       const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
