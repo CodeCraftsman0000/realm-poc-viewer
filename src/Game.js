@@ -3,6 +3,8 @@
  * 
  * Handles the visualization and game loop for our character
  */
+import { Character } from './Character.js';
+
 export class Game {
     /**
      * Creates a new game instance
