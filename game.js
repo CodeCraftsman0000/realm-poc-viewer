@@ -30,22 +30,12 @@ class Character {
      * Updates the character's position based on current direction and speed
      * @param {number} deltaTime - Time elapsed since last update (in milliseconds)
      */
-    update(deltaTime) {
-        // Calculate movement without time scaling for testing
-        const movementX = this.direction.x * this.speed;
-        const movementY = this.direction.y * this.speed;
-        
-        // Calculate new position
-        let newX = this.x + movementX;
-        let newY = this.y + movementY;
-        
-        // Apply boundaries
-        newX = Math.max(this.boundary.minX, Math.min(this.boundary.maxX, newX));
-        newY = Math.max(this.boundary.minY, Math.min(this.boundary.maxY, newY));
-        
-        // Update position
-        this.x = newX;
-        this.y = newY;
+    update() {
+        // Direct position update without any calculations
+        if (this.direction.x < 0) this.x = Math.max(this.boundary.minX, this.x - 50);
+        if (this.direction.x > 0) this.x = Math.min(this.boundary.maxX, this.x + 50);
+        if (this.direction.y < 0) this.y = Math.max(this.boundary.minY, this.y - 50);
+        if (this.direction.y > 0) this.y = Math.min(this.boundary.maxY, this.y + 50);
     }
 
     /**
@@ -54,7 +44,6 @@ class Character {
      * @param {number} y - Vertical direction (-1 = up, 1 = down, 0 = no movement)
      */
     setDirection(x, y) {
-        // Set direction directly without normalization for maximum speed
         this.direction.x = x;
         this.direction.y = y;
     }
@@ -207,11 +196,10 @@ class Game {
         let x = 0;
         let y = 0;
 
-        // Use much higher values for direction
-        if (this.keys.ArrowLeft) x -= 100;
-        if (this.keys.ArrowRight) x += 100;
-        if (this.keys.ArrowUp) y -= 100;
-        if (this.keys.ArrowDown) y += 100;
+        if (this.keys.ArrowLeft) x = -1;
+        if (this.keys.ArrowRight) x = 1;
+        if (this.keys.ArrowUp) y = -1;
+        if (this.keys.ArrowDown) y = 1;
 
         this.character.setDirection(x, y);
     }
@@ -247,8 +235,8 @@ class Game {
      * Updates the game state
      * @param {number} deltaTime - Time elapsed since last update
      */
-    update(deltaTime) {
-        this.character.update(deltaTime);
+    update() {
+        this.character.update();
         
         // Check for collisions
         for (const obj of this.objects) {
@@ -275,7 +263,7 @@ class Game {
         const deltaTime = now - this.lastTime;
         this.lastTime = now;
 
-        this.update(deltaTime);
+        this.update();
         this.draw();
         requestAnimationFrame(() => this.gameLoop());
     }
