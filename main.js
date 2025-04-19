@@ -26,7 +26,7 @@ const createScene = async () => {
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "",
     "./assets/",
-    "myModel.glb",
+    "Cubetest.glb",
     scene
   );
   const model = result.meshes[0];
