@@ -48,7 +48,7 @@
       light.intensity = 0.8;
 
       // Load a 3D environment
-      const result = await BABYLON.SceneLoader.ImportMeshAsync(
+      const environment = await BABYLON.SceneLoader.ImportMeshAsync(
   "", 
   "assets/", 
   "Cubetest.glb", 
@@ -65,7 +65,7 @@
       ground.material = groundMaterial;
 
       // Load a human character model
-      const result = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
+      const characterResult = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
 
       const character = result.meshes[0];
       character.position = new BABYLON.Vector3(0, 0, 0);
