@@ -54,15 +54,9 @@ class Character {
      * @param {number} y - Vertical direction (-1 = up, 1 = down, 0 = no movement)
      */
     setDirection(x, y) {
-        // Normalize the direction vector for smooth diagonal movement
-        const length = Math.sqrt(x * x + y * y);
-        if (length > 0) {
-            this.direction.x = x / length;
-            this.direction.y = y / length;
-        } else {
-            this.direction.x = 0;
-            this.direction.y = 0;
-        }
+        // Set direction directly without normalization for maximum speed
+        this.direction.x = x;
+        this.direction.y = y;
     }
 
     /**
@@ -137,8 +131,8 @@ class Game {
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
         
-        // Create character with higher speed
-        this.character = new Character(400, 300, 150, {
+        // Create character with extreme speed
+        this.character = new Character(400, 300, 5000, {  // Changed speed to 5000 for extreme movement
             minX: 0,
             maxX: this.canvas.width,
             minY: 0,
@@ -213,10 +207,11 @@ class Game {
         let x = 0;
         let y = 0;
 
-        if (this.keys.ArrowLeft) x -= 1;
-        if (this.keys.ArrowRight) x += 1;
-        if (this.keys.ArrowUp) y -= 1;
-        if (this.keys.ArrowDown) y += 1;
+        // Use much higher values for direction
+        if (this.keys.ArrowLeft) x -= 100;
+        if (this.keys.ArrowRight) x += 100;
+        if (this.keys.ArrowUp) y -= 100;
+        if (this.keys.ArrowDown) y += 100;
 
         this.character.setDirection(x, y);
     }
