@@ -31,11 +31,11 @@ class Character {
      * @param {number} deltaTime - Time elapsed since last update (in milliseconds)
      */
     update(deltaTime) {
-        // Calculate movement with higher precision
-        const movementX = this.direction.x * this.speed * (deltaTime / 1000);
-        const movementY = this.direction.y * this.speed * (deltaTime / 1000);
+        // Calculate movement without time scaling for testing
+        const movementX = this.direction.x * this.speed;
+        const movementY = this.direction.y * this.speed;
         
-        // Calculate new position with sub-pixel precision
+        // Calculate new position
         let newX = this.x + movementX;
         let newY = this.y + movementY;
         
@@ -43,7 +43,7 @@ class Character {
         newX = Math.max(this.boundary.minX, Math.min(this.boundary.maxX, newX));
         newY = Math.max(this.boundary.minY, Math.min(this.boundary.maxY, newY));
         
-        // Update position with sub-pixel precision
+        // Update position
         this.x = newX;
         this.y = newY;
     }
@@ -138,7 +138,7 @@ class Game {
         window.addEventListener('resize', () => this.resizeCanvas());
         
         // Create character with higher speed
-        this.character = new Character(400, 300, 45, {
+        this.character = new Character(400, 300, 150, {
             minX: 0,
             maxX: this.canvas.width,
             minY: 0,
