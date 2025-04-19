@@ -10,10 +10,10 @@ export class Character {
      * Creates a new character at the specified position
      * @param {number} startX - The initial x-coordinate
      * @param {number} startY - The initial y-coordinate
-     * @param {number} speed - Movement speed (default: 5)
+     * @param {number} speed - Movement speed (default: 10)
      * @param {Object} boundary - Optional boundary limits
      */
-    constructor(startX = 0, startY = 0, speed = 5, boundary) {
+    constructor(startX = 0, startY = 0, speed = 10, boundary) {
         this.x = startX;
         this.y = startY;
         this.speed = speed;
@@ -31,10 +31,11 @@ export class Character {
      * @param {number} deltaTime - Time elapsed since last update (in milliseconds)
      */
     update(deltaTime) {
+        // Calculate movement with higher precision
         const movementX = this.direction.x * this.speed * (deltaTime / 1000);
         const movementY = this.direction.y * this.speed * (deltaTime / 1000);
         
-        // Calculate new position
+        // Calculate new position with sub-pixel precision
         let newX = this.x + movementX;
         let newY = this.y + movementY;
         
@@ -42,6 +43,7 @@ export class Character {
         newX = Math.max(this.boundary.minX, Math.min(this.boundary.maxX, newX));
         newY = Math.max(this.boundary.minY, Math.min(this.boundary.maxY, newY));
         
+        // Update position with sub-pixel precision
         this.x = newX;
         this.y = newY;
     }
@@ -52,7 +54,7 @@ export class Character {
      * @param {number} y - Vertical direction (-1 = up, 1 = down, 0 = no movement)
      */
     setDirection(x, y) {
-        // Normalize the direction vector
+        // Normalize the direction vector for smooth diagonal movement
         const length = Math.sqrt(x * x + y * y);
         if (length > 0) {
             this.direction.x = x / length;
