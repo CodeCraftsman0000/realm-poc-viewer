@@ -65,13 +65,13 @@
       ground.material = groundMaterial;
 
       // Load a human character model
-      const characterResult = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
+      /*const characterResult = await BABYLON.SceneLoader.ImportMeshAsync("", "https://models.babylonjs.com/Dude/", "Dude.babylon", scene);
 
       const character = result.meshes[0];
       character.position = new BABYLON.Vector3(0, 0, 0);
 
       // Begin idle animation
-      scene.beginAnimation(result.skeletons[0], 0, 100, true);
+      scene.beginAnimation(result.skeletons[0], 0, 100, true);*/
 
       return scene;
     };
