@@ -34,7 +34,7 @@ const createScene = async () => {
   ground.material = groundMaterial;
 
   try {
-    console.log("Starting to load character...");
+    console.log("Starting to load test model...");
     
     // Use GLTF loader explicitly
     BABYLON.SceneLoader.OnPluginActivatedObservable.addOnce((loader) => {
@@ -44,7 +44,7 @@ const createScene = async () => {
     const result = await BABYLON.SceneLoader.ImportMeshAsync(
       null,
       "./assets/",
-      "Character.glb",
+      "Cubetest.glb",
       scene,
       null,
       ".glb"
@@ -56,11 +56,11 @@ const createScene = async () => {
       throw new Error("No meshes found in the loaded file");
     }
 
-    const character = result.meshes[0];
-    console.log("Character mesh loaded:", character.name);
+    const model = result.meshes[0];
+    console.log("Model loaded:", model.name);
     
-    character.position = new BABYLON.Vector3(0, 0, 0);
-    character.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+    model.position = new BABYLON.Vector3(0, 1, 0);
+    model.scaling = new BABYLON.Vector3(1, 1, 1);
 
     // Log animation groups
     console.log("Animation groups:", scene.animationGroups);
@@ -74,9 +74,9 @@ const createScene = async () => {
       console.log("No animations found in the file");
     }
 
-    camera.target = character.position;
+    camera.target = model.position;
   } catch (error) {
-    console.error("Error loading character:", error);
+    console.error("Error loading model:", error);
     console.error("Error details:", {
       message: error.message,
       stack: error.stack
