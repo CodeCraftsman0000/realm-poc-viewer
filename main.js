@@ -34,33 +34,53 @@ const createScene = async () => {
   ground.material = groundMaterial;
 
   try {
+    console.log("Starting to load character...");
+    
+    // Use GLTF loader explicitly
+    BABYLON.SceneLoader.OnPluginActivatedObservable.addOnce((loader) => {
+      console.log("Loader activated:", loader.name);
+    });
+
     const result = await BABYLON.SceneLoader.ImportMeshAsync(
-      "",
+      null,
       "./assets/",
       "Character.glb",
-      scene
+      scene,
+      null,
+      ".glb"
     );
 
+    console.log("Load result:", result);
+    
+    if (!result.meshes || result.meshes.length === 0) {
+      throw new Error("No meshes found in the loaded file");
+    }
+
     const character = result.meshes[0];
+    console.log("Character mesh loaded:", character.name);
+    
     character.position = new BABYLON.Vector3(0, 0, 0);
     character.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
 
-    // Log all available animations
-    console.log("Available animations:", scene.animationGroups);
+    // Log animation groups
+    console.log("Animation groups:", scene.animationGroups);
     
-    // Try to play all animations to see what they are
-    scene.animationGroups.forEach((animGroup, index) => {
-      console.log(`Animation ${index}:`, animGroup.name);
-      // Play each animation briefly to see what it does
-      animGroup.play(true);
-      setTimeout(() => {
-        animGroup.stop();
-      }, 2000); // Stop after 2 seconds
-    });
+    if (scene.animationGroups && scene.animationGroups.length > 0) {
+      scene.animationGroups.forEach((animGroup, index) => {
+        console.log(`Animation ${index}:`, animGroup.name);
+        animGroup.play(true);
+      });
+    } else {
+      console.log("No animations found in the file");
+    }
 
     camera.target = character.position;
   } catch (error) {
     console.error("Error loading character:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack
+    });
   }
 
   const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
