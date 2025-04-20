@@ -14,6 +14,8 @@ const createScene = async () => {
     scene
   );
   camera.attachControl(canvas, true);
+  camera.lowerRadiusLimit = 2;
+  camera.upperRadiusLimit = 10;
 
   const light = new BABYLON.HemisphericLight(
     "light",
@@ -21,22 +23,6 @@ const createScene = async () => {
     scene
   );
   light.intensity = 0.8;
-
-  // Load local GLB model from assets folder
-  const result = await BABYLON.SceneLoader.ImportMeshAsync(
-    "",
-    "./assets/",
-    "Cubetest.glb",
-    scene
-  );
-  const model = result.meshes[0];
-  model.position = new BABYLON.Vector3(0, 0, 0);
-
-  const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
-    "https://assets.babylonjs.com/environments/environmentSpecular.env",
-    scene
-  );
-  scene.environmentTexture = envTexture;
 
   const ground = BABYLON.MeshBuilder.CreateGround(
     "ground",
@@ -46,6 +32,42 @@ const createScene = async () => {
   const groundMaterial = new BABYLON.StandardMaterial("groundMat", scene);
   groundMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.35);
   ground.material = groundMaterial;
+
+  try {
+    const result = await BABYLON.SceneLoader.ImportMeshAsync(
+      "",
+      "./assets/",
+      "character.fbx",
+      scene
+    );
+
+    const character = result.meshes[0];
+    character.position = new BABYLON.Vector3(0, 0, 0);
+    character.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+
+    // Log all available animations
+    console.log("Available animations:", scene.animationGroups);
+    
+    // Try to play all animations to see what they are
+    scene.animationGroups.forEach((animGroup, index) => {
+      console.log(`Animation ${index}:`, animGroup.name);
+      // Play each animation briefly to see what it does
+      animGroup.play(true);
+      setTimeout(() => {
+        animGroup.stop();
+      }, 2000); // Stop after 2 seconds
+    });
+
+    camera.target = character.position;
+  } catch (error) {
+    console.error("Error loading character:", error);
+  }
+
+  const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
+    "https://assets.babylonjs.com/environments/environmentSpecular.env",
+    scene
+  );
+  scene.environmentTexture = envTexture;
 
   return scene;
 };
