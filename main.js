@@ -44,7 +44,7 @@ const createScene = async () => {
     const result = await BABYLON.SceneLoader.ImportMeshAsync(
       null,
       "./assets/",
-      "Cubetest.glb",
+      "StoreMart.glb",
       scene,
       null,
       ".glb"
